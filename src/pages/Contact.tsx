@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Mail, Phone, MapPin, Linkedin, Github, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -51,15 +52,31 @@ const Contact = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     
-    // Simulate form submission
+    // Create the mailto URL
+    const mailtoLink = `mailto:noel.regis04@gmail.com?subject=${encodeURIComponent(
+      `${values.subject} - Contact Form Submission`
+    )}&body=${encodeURIComponent(
+      `Name: ${values.name}\nEmail: ${values.email}\n\n${values.message}`
+    )}`;
+    
+    // Open the mail client
+    window.open(mailtoLink, "_blank");
+    
+    // Provide feedback
     setTimeout(() => {
-      console.log(values);
+      console.log("Form values:", values);
       setIsSubmitting(false);
       form.reset();
       
+      // Show toast notification
       toast({
-        title: "Message sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
+        title: "Message prepared for sending!",
+        description: "Your default email client has been opened with your message.",
+      });
+      
+      // Also show Sonner toast for better visibility
+      sonnerToast.success("Message prepared for sending!", {
+        description: "Your default email client has been opened with your message.",
       });
     }, 1000);
   }
