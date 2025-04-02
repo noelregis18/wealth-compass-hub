@@ -18,12 +18,14 @@ import CalculatorLayout from "@/components/calculator/CalculatorLayout";
 import SliderInput from "@/components/calculator/SliderInput";
 import ResultCard from "@/components/calculator/ResultCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
 
 const SimpleInterestCalculator = () => {
+  // State variables for calculator inputs
   const [principal, setPrincipal] = useState(10000);
   const [rate, setRate] = useState(5);
   const [time, setTime] = useState(5);
-  const [isCompound, setIsCompound] = useState(false);
+  const [interestType, setInterestType] = useState("simple"); // simple or compound
   const [compoundFrequency, setCompoundFrequency] = useState(1); // 1=yearly, 4=quarterly, 12=monthly
 
   // Results
@@ -40,13 +42,13 @@ const SimpleInterestCalculator = () => {
     }).format(value);
   };
 
-  // Calculate interest
+  // Calculate interest when inputs change
   useEffect(() => {
     calculateInterest();
-  }, [principal, rate, time, isCompound, compoundFrequency]);
+  }, [principal, rate, time, interestType, compoundFrequency]);
 
   const calculateInterest = () => {
-    if (isCompound) {
+    if (interestType === "compound") {
       // Compound Interest calculation
       const amount = principal * Math.pow(1 + rate / (100 * compoundFrequency), compoundFrequency * time);
       setTotalAmount(amount);
@@ -69,7 +71,7 @@ const SimpleInterestCalculator = () => {
       let amount;
       let interest;
 
-      if (isCompound) {
+      if (interestType === "compound") {
         amount = principal * Math.pow(1 + rate / (100 * compoundFrequency), compoundFrequency * year);
         interest = amount - principal;
       } else {
@@ -91,14 +93,48 @@ const SimpleInterestCalculator = () => {
   // Colors for charts
   const COLORS = ["#3B82F6", "#10B981"];
 
+  // Get title and description based on interest type
+  const getTitle = () => interestType === "compound" ? "Compound Interest Calculator" : "Simple Interest Calculator";
+  const getDescription = () => interestType === "compound" 
+    ? "Calculate the compound interest and final amount on your investments"
+    : "Calculate the simple interest and final amount on your investments";
+
   return (
     <Layout>
       <CalculatorLayout
-        title={isCompound ? "Compound Interest Calculator" : "Simple Interest Calculator"}
-        description={isCompound 
-          ? "Calculate the compound interest and final amount on your investments"
-          : "Calculate the simple interest and final amount on your investments"}
+        title={getTitle()}
+        description={getDescription()}
       >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold mb-4">Interest Type</h3>
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="flex items-center space-x-2">
+                <input 
+                  type="radio" 
+                  id="simple" 
+                  name="interestType" 
+                  checked={interestType === "simple"} 
+                  onChange={() => setInterestType("simple")}
+                  className="w-4 h-4 text-primary"
+                />
+                <label htmlFor="simple">Simple Interest</label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input 
+                  type="radio" 
+                  id="compound" 
+                  name="interestType" 
+                  checked={interestType === "compound"} 
+                  onChange={() => setInterestType("compound")}
+                  className="w-4 h-4 text-primary"
+                />
+                <label htmlFor="compound">Compound Interest</label>
+              </div>
+            </div>
+          </Card>
+        </div>
+
         <Tabs defaultValue="calculator">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="calculator">Calculator</TabsTrigger>
@@ -109,31 +145,6 @@ const SimpleInterestCalculator = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-lg font-semibold mb-4">Investment Details</h3>
-
-                <div className="flex items-center space-x-2 mb-6">
-                  <div className="flex items-center space-x-2">
-                    <input 
-                      type="radio" 
-                      id="simple" 
-                      name="interestType" 
-                      checked={!isCompound} 
-                      onChange={() => setIsCompound(false)}
-                      className="w-4 h-4 text-primary"
-                    />
-                    <label htmlFor="simple">Simple Interest</label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input 
-                      type="radio" 
-                      id="compound" 
-                      name="interestType" 
-                      checked={isCompound} 
-                      onChange={() => setIsCompound(true)}
-                      className="w-4 h-4 text-primary"
-                    />
-                    <label htmlFor="compound">Compound Interest</label>
-                  </div>
-                </div>
 
                 <SliderInput
                   label="Principal Amount"
@@ -167,7 +178,7 @@ const SimpleInterestCalculator = () => {
                   unit="years"
                 />
 
-                {isCompound && (
+                {interestType === "compound" && (
                   <div className="space-y-2 mt-4">
                     <label className="text-sm font-medium">Compounding Frequency</label>
                     <div className="grid grid-cols-3 gap-2">
@@ -218,12 +229,12 @@ const SimpleInterestCalculator = () => {
                     title="Total Amount"
                     value={formatCurrency(totalAmount)}
                     description="Final value of your investment"
-                    className="bg-gradient-blue text-white"
+                    className="bg-gradient-to-r from-blue-500 to-blue-700 text-white"
                   />
                 </div>
 
                 <div className="mt-8">
-                  <h4 className="text-sm font-medium mb-4">Principal vs Total Amount</h4>
+                  <h4 className="text-sm font-medium mb-4">Principal vs Interest</h4>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -319,6 +330,23 @@ const SimpleInterestCalculator = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {interestType === "compound" && (
+          <div className="mt-8 p-6 bg-blue-50 rounded-lg">
+            <h3 className="font-semibold mb-2">About Compound Interest</h3>
+            <p className="text-sm text-gray-700">
+              Compound interest is calculated on the initial principal and also on the accumulated interest over previous periods.
+              The formula used is: A = P(1 + r/n)^(nt) where:
+            </p>
+            <ul className="list-disc pl-5 mt-2 text-sm text-gray-700">
+              <li>A = Final amount</li>
+              <li>P = Principal</li>
+              <li>r = Annual interest rate (decimal)</li>
+              <li>n = Compounding frequency per year</li>
+              <li>t = Time in years</li>
+            </ul>
+          </div>
+        )}
       </CalculatorLayout>
     </Layout>
   );
