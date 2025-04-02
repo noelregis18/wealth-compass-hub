@@ -10,6 +10,14 @@ import Contact from "./pages/Contact";
 import MortgageCalculator from "./pages/calculators/MortgageCalculator";
 import EMICalculator from "./pages/calculators/EMICalculator";
 import SIPCalculator from "./pages/calculators/SIPCalculator";
+import SimpleInterestCalculator from "./pages/calculators/SimpleInterestCalculator";
+import DownPaymentCalculator from "./pages/calculators/DownPaymentCalculator";
+import LeaseCalculator from "./pages/calculators/LeaseCalculator";
+import SWPCalculator from "./pages/calculators/SWPCalculator";
+import MutualFundCalculator from "./pages/calculators/MutualFundCalculator";
+import RetirementCalculator from "./pages/calculators/RetirementCalculator";
+import SalaryCalculator from "./pages/calculators/SalaryCalculator";
+import TaxSavingCalculator from "./pages/calculators/TaxSavingCalculator";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +34,14 @@ const App = () => (
             <Route path="/calculator/mortgage" element={<MortgageCalculator />} />
             <Route path="/calculator/emi" element={<EMICalculator />} />
             <Route path="/calculator/sip" element={<SIPCalculator />} />
+            <Route path="/calculator/simple-interest" element={<SimpleInterestCalculator />} />
+            <Route path="/calculator/down-payment" element={<DownPaymentCalculator />} />
+            <Route path="/calculator/lease" element={<LeaseCalculator />} />
+            <Route path="/calculator/swp" element={<SWPCalculator />} />
+            <Route path="/calculator/mutual-fund" element={<MutualFundCalculator />} />
+            <Route path="/calculator/retirement" element={<RetirementCalculator />} />
+            <Route path="/calculator/salary" element={<SalaryCalculator />} />
+            <Route path="/calculator/tax-saving" element={<TaxSavingCalculator />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
