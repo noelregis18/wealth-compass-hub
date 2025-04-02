@@ -11,6 +11,7 @@ import MortgageCalculator from "./pages/calculators/MortgageCalculator";
 import EMICalculator from "./pages/calculators/EMICalculator";
 import SIPCalculator from "./pages/calculators/SIPCalculator";
 import SimpleInterestCalculator from "./pages/calculators/SimpleInterestCalculator";
+import CompoundInterestCalculator from "./pages/calculators/CompoundInterestCalculator";
 import DownPaymentCalculator from "./pages/calculators/DownPaymentCalculator";
 import LeaseCalculator from "./pages/calculators/LeaseCalculator";
 import SWPCalculator from "./pages/calculators/SWPCalculator";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/calculator/emi" element={<EMICalculator />} />
             <Route path="/calculator/sip" element={<SIPCalculator />} />
             <Route path="/calculator/simple-interest" element={<SimpleInterestCalculator />} />
+            <Route path="/calculator/compound-interest" element={<CompoundInterestCalculator />} />
             <Route path="/calculator/down-payment" element={<DownPaymentCalculator />} />
             <Route path="/calculator/lease" element={<LeaseCalculator />} />
             <Route path="/calculator/swp" element={<SWPCalculator />} />
