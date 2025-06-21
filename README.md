@@ -9,9 +9,6 @@ A comprehensive suite of financial calculators for loans, investments, and perso
 - Instant calculation results
 - Open source and customizable
 
-## Demo
-![Wealth Compass Hub Screenshot](public/favicon.ico)
-
 ## Getting Started
 
 ### Prerequisites
